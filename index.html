@@ -3,220 +3,206 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O2 Performance Lab - Test de Rendimiento</title>
+<title>Test de Entorno del Deportista: Aire y Agua</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--primary:#38bdf8;--primary-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--green:#22c55e}
+:root{--bg:#0f172a;--card:#1e293b;--primary:#38bdf8;--text:#f8fafc;--muted:#94a3b8;--green:#22c55e}
 *{box-sizing:border-box}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh}
 .container{background:var(--card);padding:30px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.3);width:100%;max-width:600px}
 h2,h3{color:var(--primary);margin-top:0}
 .progress-bar{background:#334155;height:6px;border-radius:3px;margin-bottom:25px;overflow:hidden}
-.progress{background:var(--primary);height:100%;width:20%;transition:width .3s ease}
-.question-step{display:none}
-.question-step.active{display:block}
-.options-list{list-style:none;padding:0;margin:20px 0}
-.options-list li{background:#334155;padding:15px;border-radius:8px;margin-bottom:12px;cursor:pointer;transition:all .2s;border:1px solid transparent}
-.options-list li:hover{background:#475569;border-color:var(--primary)}
+.progress{background:var(--primary);height:100%;width:12%;transition:width .3s ease}
+.step{display:none}.step.active{display:block}
+.options{list-style:none;padding:0;margin:20px 0}
+.options li{background:#334155;padding:15px;border-radius:8px;margin-bottom:12px;cursor:pointer;border:1px solid transparent;transition:all .2s}
+.options li:hover{background:#475569;border-color:var(--primary)}
+input[type=text],input[type=tel],input[type=email],select{width:100%;padding:14px;border-radius:8px;border:1px solid #475569;background:#334155;color:var(--text);font-size:16px;margin:0 0 12px}
 .btn{background:var(--primary);color:var(--bg);border:none;padding:15px 24px;font-weight:bold;border-radius:8px;cursor:pointer;width:100%;font-size:16px;display:block;text-align:center;text-decoration:none}
-.btn-whatsapp{background:var(--green);color:#fff;margin-top:20px;box-shadow:0 4px 15px rgba(34,197,94,.3)}
-.btn-whatsapp:hover{background:#16a34a}
-.spec-table{width:100%;border-collapse:collapse;margin:15px 0;background:#111827;border-radius:8px;overflow:hidden}
-.spec-table td{padding:12px;border-bottom:1px solid #374151;font-size:14px}
-.spec-table td:first-child{font-weight:bold;color:var(--primary);width:40%}
-.badge{background:#f59e0b;color:#0f172a;padding:4px 8px;border-radius:4px;font-weight:bold;font-size:14px}
-.maint-box{background:rgba(56,189,248,.1);border:1px dashed var(--primary);padding:15px;border-radius:8px;margin-top:15px;font-size:14px}
+.btn-wa{background:var(--green);color:#fff;margin-top:20px;box-shadow:0 4px 15px rgba(34,197,94,.3)}
+.badge{background:#f59e0b;color:#0f172a;padding:4px 8px;border-radius:4px;font-weight:bold;font-size:14px;display:inline-block;margin:3px}
+.box{line-height:1.6;background:#111827;padding:15px;border-radius:8px;margin-bottom:16px;border-left:4px solid var(--primary)}
+.spec{width:100%;border-collapse:collapse;margin:10px 0;background:#111827;border-radius:8px;overflow:hidden}
+.spec td{padding:10px 12px;border-bottom:1px solid #374151;font-size:14px}
+.spec td:first-child{font-weight:bold;color:var(--primary);width:38%}
+.err{color:#fca5a5;font-size:14px;min-height:20px;margin:0 0 10px}
+.note{font-size:12px;color:var(--muted);font-style:italic;margin-top:15px}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div id="quiz-header">
-    <h2 style="text-align:center;margin-bottom:5px">O2 Performance Lab</h2>
-    <p style="text-align:center;color:var(--muted);margin-bottom:20px">Evaluación de entorno para atletas</p>
-    <div class="progress-bar"><div class="progress" id="progress"></div></div>
-  </div>
+<div id="head">
+  <h2 style="text-align:center;margin-bottom:5px">Test de Entorno del Deportista</h2>
+  <p style="text-align:center;color:var(--muted);margin-bottom:20px">Descubre cómo es el aire y el agua de tu zona de entrenamiento y qué puedes mejorar. 2 minutos.</p>
+  <div class="progress-bar"><div class="progress" id="progress"></div></div>
+</div>
 
-  <div id="quizForm">
-    <div class="question-step active" id="step1">
-      <h3>1. ¿Qué tipo de deporte practicas y con qué intensidad?</h3>
-      <ul class="options-list">
-        <li onclick="nextStep(1,'Fuerza / Gimnasio')">Fuerza / Gimnasio / Crossfit (alta intensidad en interiores)</li>
-        <li onclick="nextStep(1,'Resistencia')">Running / Ciclismo / Triatlón (resistencia en exteriores)</li>
-        <li onclick="nextStep(1,'Recreativo')">Deportes de equipo / Funcional / Outdoor</li>
-      </ul>
-    </div>
+<div id="quiz">
+  <div class="step active" id="s1"><h3>1. ¿Qué deporte practicas?</h3><ul class="options">
+    <li onclick="pick(1,'Fuerza / Gimnasio')">Fuerza / Gimnasio / Crossfit</li>
+    <li onclick="pick(1,'Resistencia')">Running / Ciclismo / Triatlón</li>
+    <li onclick="pick(1,'Recreativo')">Deportes de equipo / Funcional / Outdoor</li></ul></div>
 
-    <div class="question-step" id="step2">
-      <h3>2. Después de entrenar, ¿cómo calificarías tu velocidad de recuperación?</h3>
-      <ul class="options-list">
-        <li onclick="nextStep(2,'Excelente')">Excelente, me levanto con total energía.</li>
-        <li onclick="nextStep(2,'Regular')">Regular, suelo sentir pesadez muscular prolongada.</li>
-        <li onclick="nextStep(2,'Lenta')">Lenta, me cuesta recuperarme y amanezco congestionado.</li>
-      </ul>
-    </div>
+  <div class="step" id="s2"><h3>2. ¿Cuántas horas entrenas por semana?</h3><ul class="options">
+    <li onclick="pick(2,'1 a 3')">1 a 3 horas</li>
+    <li onclick="pick(2,'4 a 6')">4 a 6 horas</li>
+    <li onclick="pick(2,'7 o más')">7 horas o más</li></ul></div>
 
-    <div class="question-step" id="step3">
-      <h3>3. ¿En qué zona de tu hogar pasas más tiempo de descanso?</h3>
-      <ul class="options-list">
-        <li onclick="nextStep(3,'el dormitorio')">En la habitación / dormitorio (durmiendo / descansando)</li>
-        <li onclick="nextStep(3,'la sala / comedor')">En la sala o comedor (home office / comiendo / viendo TV)</li>
-      </ul>
-    </div>
+  <div class="step" id="s3"><h3>3. ¿Dónde entrenas?</h3><ul class="options">
+    <li onclick="pick(3,'Interiores')">Principalmente en interiores (gimnasio o casa)</li>
+    <li onclick="pick(3,'Exteriores')">Principalmente al aire libre</li>
+    <li onclick="pick(3,'Ambos')">Ambos por igual</li></ul></div>
 
-    <div class="question-step" id="step4">
-      <h3>4. ¿Sueles notar alguno de estos síntomas al despertar en casa?</h3>
-      <ul class="options-list">
-        <li onclick="nextStep(4,'garganta seca, estornudos o molestias respiratorias')">Garganta seca, estornudos o molestias constantes.</li>
-        <li onclick="nextStep(4,'sueño poco profundo o leves dolores de cabeza')">Sueño poco profundo o leves dolores de cabeza.</li>
-        <li onclick="nextStep(4,'')">Ninguno de los anteriores.</li>
-      </ul>
-    </div>
+  <div class="step" id="s4"><h3>4. ¿Dónde pasas más tiempo de descanso en casa?</h3><ul class="options">
+    <li onclick="pick(4,'el dormitorio')">En el dormitorio</li>
+    <li onclick="pick(4,'la sala / comedor')">En la sala o comedor (home office, TV)</li></ul></div>
 
-    <div class="question-step" id="step5">
-      <h3>5. ¿Cuál es tu principal objetivo deportivo actual?</h3>
-      <ul class="options-list">
-        <li onclick="askName('mejorar mi rendimiento y capacidad pulmonar')">Romper marcas personales y mejorar mi capacidad pulmonar.</li>
-        <li onclick="askName('acelerar mi recuperación')">Acelerar mi recuperación para entrenar más seguido.</li>
-        <li onclick="askName('evitar interrupciones por alergias o gripes')">Evitar interrupciones en mis entrenamientos por alergias o gripes.</li>
-      </ul>
-    </div>
+  <div class="step" id="s5"><h3>5. ¿Notas alguno de estos síntomas al despertar?</h3><ul class="options">
+    <li onclick="pick(5,'garganta seca, estornudos o molestias respiratorias')">Garganta seca, estornudos o molestias constantes</li>
+    <li onclick="pick(5,'sueño poco profundo o leves dolores de cabeza')">Sueño poco profundo o leves dolores de cabeza</li>
+    <li onclick="pick(5,'')">Ninguno de los anteriores</li></ul></div>
 
-    <div class="question-step" id="step6">
-      <h3>¡Último paso! ¿Cómo te llamas?</h3>
-      <p style="color:var(--muted);line-height:1.5">Así personalizamos tu resultado y tu mensaje de WhatsApp.</p>
-      <input id="nameInput" type="text" maxlength="40" placeholder="Tu nombre" autocomplete="given-name"
-        style="width:100%;padding:14px;border-radius:8px;border:1px solid #475569;background:#334155;color:var(--text);font-size:16px;margin:10px 0 20px">
-      <input id="phoneInput" type="tel" maxlength="20" placeholder="Tu teléfono (opcional)" autocomplete="tel"
-        style="width:100%;padding:14px;border-radius:8px;border:1px solid #475569;background:#334155;color:var(--text);font-size:16px;margin:0 0 15px">
-      <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.4;margin-bottom:20px;cursor:pointer">
-        <input id="consentInput" type="checkbox" style="margin-top:3px">
-        <span>Acepto que me contacten con información sobre este producto y que se guarden mis respuestas para ese fin.</span>
-      </label>
-      <button type="button" class="btn" onclick="calculateResults()">Ver mi resultado</button>
-    </div>
-  </div>
+  <div class="step" id="s6"><h3>6. ¿De dónde viene el agua que tomas al entrenar?</h3><ul class="options">
+    <li onclick="pick(6,'Bidón')">De bidones comprados</li>
+    <li onclick="pick(6,'Canilla')">De la canilla, sin filtro</li>
+    <li onclick="pick(6,'Filtro')">De la canilla con algún filtro o purificador</li>
+    <li onclick="pick(6,'No sé')">No lo sé con certeza</li></ul></div>
 
-  <div id="resultsPage" style="display:none">
-    <h2 style="text-align:center">🏆 ¡Test completado!</h2>
-    <p style="text-align:center;font-size:18px;margin-bottom:5px">Oportunidad de mejora de tu entorno:</p>
-    <div style="text-align:center;margin-bottom:25px"><span class="badge" id="scoreBadge"></span></div>
+  <div class="step" id="s7"><h3>7. ¿Cuál es tu principal objetivo deportivo?</h3><ul class="options">
+    <li onclick="pick(7,'mejorar mi rendimiento')">Mejorar mi rendimiento y mis marcas</li>
+    <li onclick="pick(7,'acelerar mi recuperación')">Acelerar mi recuperación para entrenar más seguido</li>
+    <li onclick="pick(7,'entrenar con más constancia')">Evitar interrupciones por alergias o gripes</li></ul></div>
 
-    <div id="dynamicDiagnostic" style="line-height:1.6;background:#1e293b;padding:15px;border-radius:8px;margin-bottom:20px;border-left:4px solid #38bdf8"></div>
-
-    <h3>🛡 Una solución para tu hogar: purificador de aire portátil</h3>
-    <p style="line-height:1.5;color:var(--muted)">
-      Un equipo compacto y móvil (8 kg) para mejorar la calidad del aire en tus espacios de descanso sin cambiar tu rutina diaria.
-    </p>
-    <table class="spec-table">
-      <tr><td>Filtración</td><td>Prefiltro de aluminio + filtro catalizador + filtro HEPA de alta eficiencia.</td></tr>
-      <tr><td>Protección activa</td><td>Agentes antimicrobianos en el filtro HEPA e ionizador de partículas integrado.</td></tr>
-      <tr><td>Monitoreo digital</td><td>Sensor PM2.5 con alertas por color en pantalla (verde / naranja / rojo).</td></tr>
-      <tr><td>Modo descanso</td><td>Función Sleep silenciosa con apagado de luces.</td></tr>
-      <tr><td>Cobertura</td><td>Caudal de 320 m³/h, para espacios de hasta 100 m³.</td></tr>
-      <tr><td>Comodidad</td><td>Panel táctil superior y control remoto incluido.</td></tr>
-    </table>
-    <div class="maint-box">
-      <strong>🔄 Mantenimiento simple:</strong><br>
-      El prefiltro se higieniza cada 30 días y el bloque de filtración interna tiene un recambio estipulado cada 12 meses, según el uso.
-    </div>
-
-    <a id="whatsappBtn" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener">Solicitar asesoría por WhatsApp</a>
-
-    <p style="font-size:12px;color:var(--muted);font-style:italic;margin-top:15px">
-      * Este test ofrece recomendaciones generales basadas en las especificaciones del fabricante y no sustituye el consejo de un profesional de la salud.
-    </p>
+  <div class="step" id="s8"><h3>¡Último paso! Tus datos</h3>
+    <p style="color:var(--muted);line-height:1.5">Para mostrarte tu resultado personalizado.</p>
+    <input id="nombre" type="text" maxlength="40" placeholder="Tu nombre" autocomplete="given-name">
+    <input id="wa" type="tel" maxlength="20" placeholder="Tu WhatsApp (ej: 0981 123 456)" autocomplete="tel">
+    <input id="correo" type="email" maxlength="60" placeholder="Tu correo (opcional)" autocomplete="email">
+    <select id="depto">
+      <option value="">Departamento donde vives</option>
+      <option>Asunción (Capital)</option><option>Alto Paraguay</option><option>Alto Paraná</option>
+      <option>Amambay</option><option>Boquerón</option><option>Caaguazú</option><option>Caazapá</option>
+      <option>Canindeyú</option><option>Central</option><option>Concepción</option><option>Cordillera</option>
+      <option>Guairá</option><option>Itapúa</option><option>Misiones</option><option>Ñeembucú</option>
+      <option>Paraguarí</option><option>Presidente Hayes</option><option>San Pedro</option>
+    </select>
+    <input id="ciudad" type="text" maxlength="40" placeholder="Ciudad o barrio" autocomplete="address-level2">
+    <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.4;margin:6px 0 14px;cursor:pointer">
+      <input id="consent" type="checkbox" style="margin-top:3px">
+      <span>Acepto que me contacten con información sobre estos productos y que se guarden mis respuestas para ese fin.</span>
+    </label>
+    <p class="err" id="err"></p>
+    <button type="button" class="btn" onclick="finish()">Ver mi resultado</button>
   </div>
 </div>
 
+<div id="results" style="display:none">
+  <h2 style="text-align:center">🏆 ¡Test completado!</h2>
+  <p style="text-align:center;margin-bottom:5px">Oportunidad de mejora de tu entorno:</p>
+  <div style="text-align:center;margin-bottom:20px"><span class="badge" id="bAire"></span><span class="badge" id="bAgua"></span></div>
+  <div class="box" id="diag"></div>
+
+  <h3>💨 Aire: purificador portátil</h3>
+  <table class="spec">
+    <tr><td>Filtración</td><td>Prefiltro + filtro catalizador + filtro HEPA de alta eficiencia.</td></tr>
+    <tr><td>Monitoreo</td><td>Sensor PM2.5 con alertas por color en pantalla.</td></tr>
+    <tr><td>Cobertura</td><td>320 m³/h, para espacios de hasta 100 m³. Modo Sleep silencioso.</td></tr>
+  </table>
+
+  <h3>💧 Agua: purificador Senior 4</h3>
+  <table class="spec">
+    <tr><td>Filtración</td><td>Carbón activado granular, carbón impregnado en plata, KDF y zeolitas naturales.</td></tr>
+    <tr><td>Instalación</td><td>Se conecta al suministro de agua potable. Sencilla, sin herramientas especiales ni electricidad.</td></tr>
+    <tr><td>Uso</td><td>Para beber, cocinar y lavar alimentos. Garantía de 3 años.</td></tr>
+  </table>
+
+  <a id="waBtn" class="btn btn-wa" href="#" target="_blank" rel="noopener">Solicitar asesoría por WhatsApp</a>
+  <p class="note">* Este test ofrece recomendaciones generales y orientativas, basadas en las especificaciones del fabricante. No mide la calidad real del aire o del agua ni sustituye el consejo de un profesional de la salud.</p>
+</div>
+</div>
+
 <script>
-var answers = {};
+var A = {};
 var WHATSAPP_NUMBER = "595971108692";
-// Pega aquí la URL de tu Apps Script (termina en /exec). Si está vacía, no se guarda nada.
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwh0HdSWlryyFosWBMY8TcLe8HS3kMqXPp99UPD_9ctjNCcycjNQa8Fg4UtaF_a2OYm4w/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbw7CK7MOM4_J-Qn2NMJAKJssvr-7yaGte74b3HQ4veri0niU_T4dy5KQykGH9JgqdiU/exec";
+var TOTAL = 8;
 
-function nextStep(current, value) {
-  answers['step' + current] = value;
-  document.getElementById('step' + current).classList.remove('active');
-  var next = current + 1;
-  var el = document.getElementById('step' + next);
-  if (el) {
-    el.classList.add('active');
-    document.getElementById('progress').style.width = (next * 20) + '%';
-  }
+function pick(n, v) {
+  A['s' + n] = v;
+  document.getElementById('s' + n).classList.remove('active');
+  document.getElementById('s' + (n + 1)).classList.add('active');
+  document.getElementById('progress').style.width = ((n + 1) / TOTAL * 100) + '%';
 }
-
-function askName(objective) {
-  answers.step5 = objective;
-  document.getElementById('step5').classList.remove('active');
-  document.getElementById('step6').classList.add('active');
-  document.getElementById('progress').style.width = '100%';
-  document.getElementById('nameInput').focus();
-}
-
-function saveToSheet(data) {
-  if (!SHEET_URL) return;
-  try {
-    fetch(SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(data)
-    }).catch(function () {});
-  } catch (e) {}
-}
-
-function escapeHtml(t) {
+function esc(t) {
   return t.replace(/[&<>"']/g, function (c) {
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
 }
+function save(data) {
+  if (!SHEET_URL) return;
+  try {
+    fetch(SHEET_URL, { method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data) }).catch(function () {});
+  } catch (e) {}
+}
+function finish() {
+  var nombre = document.getElementById('nombre').value.trim();
+  var wa = document.getElementById('wa').value.trim();
+  var correo = document.getElementById('correo').value.trim();
+  var depto = document.getElementById('depto').value;
+  var ciudad = document.getElementById('ciudad').value.trim();
+  var consent = document.getElementById('consent').checked;
+  var err = document.getElementById('err');
 
-function calculateResults() {
-  var name = document.getElementById('nameInput').value.trim();
-  document.getElementById('quiz-header').style.display = 'none';
-  document.getElementById('quizForm').style.display = 'none';
+  if (!nombre) { err.textContent = 'Escribe tu nombre.'; return; }
+  if (!depto) { err.textContent = 'Elige tu departamento.'; return; }
+  if (consent && wa.replace(/\D/g, '').length < 8) { err.textContent = 'Escribe un número de WhatsApp válido.'; return; }
+  err.textContent = '';
 
-  // Puntaje orientativo según respuestas (no es una medición del aire)
-  var score = 20;
-  if (answers.step2 === 'Regular') score += 20;
-  if (answers.step2 === 'Lenta') score += 35;
-  if (answers.step3 === 'el dormitorio') score += 15;
-  if (answers.step4) score += 20;
-  if (answers.step1 === 'Fuerza / Gimnasio') score += 10;
-  score = Math.min(score, 100);
-  document.getElementById('scoreBadge').textContent = score + '% de oportunidad de mejora';
+  // Puntajes orientativos (según respuestas, no son mediciones)
+  var aire = 20;
+  if (A.s4 === 'el dormitorio') aire += 15;
+  if (A.s5) aire += 25;
+  if (A.s3 === 'Interiores') aire += 15; else if (A.s3 === 'Ambos') aire += 8;
+  if (A.s2 === '7 o más') aire += 10;
+  aire = Math.min(aire, 100);
 
-  if (document.getElementById('consentInput').checked) {
-    saveToSheet({
-      nombre: name,
-      telefono: document.getElementById('phoneInput').value.trim(),
-      deporte: answers.step1,
-      recuperacion: answers.step2,
-      zona: answers.step3,
-      sintomas: answers.step4 || 'Ninguno',
-      objetivo: answers.step5,
-      puntaje: score
-    });
+  var agua = 20;
+  if (A.s6 === 'Canilla') agua += 40;
+  else if (A.s6 === 'No sé') agua += 30;
+  else if (A.s6 === 'Bidón') agua += 20;
+  else if (A.s6 === 'Filtro') agua += 10;
+  if (A.s2 === '7 o más') agua += 15; else if (A.s2 === '4 a 6') agua += 8;
+  agua = Math.min(agua, 100);
+
+  document.getElementById('bAire').textContent = '💨 Aire: ' + aire + '%';
+  document.getElementById('bAgua').textContent = '💧 Agua: ' + agua + '%';
+
+  var interes = Math.abs(aire - agua) < 10 ? 'el aire y el agua' : (aire > agua ? 'el aire' : 'el agua');
+
+  var t = '<strong>Resumen personalizado:</strong><br><br>Hola, ' + esc(nombre) + '. Tu meta es <strong>' + A.s7 + '</strong>. ';
+  t += 'El aire que respiras al descansar y el agua que tomas al entrenar forman parte de tu entorno diario.<br><br>';
+  t += 'Descansas sobre todo en <strong>' + A.s4 + '</strong>';
+  if (A.s5) t += ' y mencionaste: <strong>' + A.s5 + '</strong>';
+  t += '. Y tu agua de entrenamiento viene de: <strong>' + A.s6.toLowerCase() + '</strong>.<br><br>';
+  t += 'Según tus respuestas, hoy tienes más oportunidad de mejora en <strong>' + interes + '</strong>.';
+  document.getElementById('diag').innerHTML = t;
+
+  if (consent) {
+    save({ nombre: nombre, whatsapp: wa, correo: correo, departamento: depto, ciudad: ciudad,
+      deporte: A.s1, horas: A.s2, lugar: A.s3, descanso: A.s4, sintomas: A.s5 || 'Ninguno',
+      agua: A.s6, objetivo: A.s7, puntajeAire: aire, puntajeAgua: agua });
   }
 
-  var txt = '<strong>Resumen personalizado:</strong><br><br>';
-  txt += 'Hola, ' + (name ? escapeHtml(name) : 'atleta') + '. Tu meta principal es <strong>' + answers.step5 + '</strong>. ';
-  txt += 'El aire de tu entorno puede influir en tu descanso y en cómo te sientes al entrenar.<br><br>';
-  txt += 'Pasas gran parte de tu descanso en <strong>' + answers.step3 + '</strong>';
-  if (answers.step4) {
-    txt += ' y mencionaste: <strong>' + answers.step4 + '</strong>';
-  }
-  txt += '. Mejorar la calidad del aire en ese espacio es un paso sencillo para cuidar tu bienestar.<br><br>';
-  txt += 'Al entrenar fuerte aumenta tu demanda de oxígeno, por eso conviene que los lugares donde descansas tengan aire lo más limpio posible.';
-  document.getElementById('dynamicDiagnostic').innerHTML = txt;
+  var donde = ciudad ? ciudad + ', ' + depto : depto;
+  var msg = '¡Hola! Soy ' + nombre + ' (' + donde + '). Completé el Test de Entorno del Deportista y me interesa información sobre ' +
+    interes + ' para ' + A.s7 + '. ¿Me puedes orientar?';
+  document.getElementById('waBtn').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
 
-  var msg = '¡Hola! ' + (name ? 'Soy ' + name + '. ' : '') + 'Completé el Test de Rendimiento Ambiental. Me interesa mejorar el aire de ' +
-            answers.step3 + ' para ' + answers.step5 +
-            '. ¿Me darías información sobre el purificador de aire portátil?';
-  document.getElementById('whatsappBtn').href =
-    'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
-
-  document.getElementById('resultsPage').style.display = 'block';
+  document.getElementById('head').style.display = 'none';
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
 }
 </script>
 </body>
